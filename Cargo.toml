@@ -2,6 +2,11 @@
 name = "litterrobot3"
 version = "0.1.0"
 edition = "2024"
+license = "MIT"
+description = "A client wrapper over the litter robot API. Control your robot from rust :)"
+readme = "README.md"
+homepage = "https://github.com/Blankets/litterrobot3"
+repository = "https://github.com/Blankets/litterrobot3"
 
 [dependencies]
 anyhow = "1.0.98"
