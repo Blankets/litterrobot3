@@ -1,6 +1,6 @@
 use anyhow::{Ok, Result};
 use serde::{Deserialize, Serialize};
-use std::sync::Mutex;
+use tokio::sync::Mutex;
 use std::time::{Duration, Instant};
 
 use super::util;
@@ -28,7 +28,7 @@ impl Client {
     }
 
     pub async fn get_authorization(&self) -> Option<String> {
-        let mut token = self.token_state.lock().unwrap();
+        let mut token = self.token_state.lock().await;
         if token.requires_refresh() {
             let refreshed = Self::refresh_oauth_token(&token.refresh_token.as_ref().unwrap())
                 .await

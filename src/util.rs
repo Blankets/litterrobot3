@@ -81,7 +81,12 @@ pub fn get_robots_url(user_id: &str) -> String {
     format!("{LR_API_BASE_URI}/users/{user_id}/robots")
 }
 
-pub fn get_command_url(user_id: &str, robot_id: &str) -> String {
-    let robots_url = get_robots_url(user_id);
-    format!("{robots_url}/{robot_id}/dispatch-commands")
+pub fn get_robot_by_id_url(user_id: &str, robot_id: &str) -> String {
+    let base = get_robots_url(user_id);
+    format!("{base}/{robot_id}")
+}
+
+pub fn get_dispatch_command_url(user_id: &str, robot_id: &str) -> String {
+    let base = get_robot_by_id_url(user_id, robot_id);
+    format!("{base}/{robot_id}/dispatch-commands")
 }

@@ -1,4 +1,4 @@
-use super::command::{Command, CommandRequest, CommandResponse};
+use super::command::{Command, CommandRequest, CommandResponse, ResetDrawerRequest};
 use super::robot::Robot;
 use super::util;
 use anyhow::Result;
@@ -70,11 +70,11 @@ impl Client {
     async fn send_command(&self, robot_id: &str, command: Command) -> Result<CommandResponse> {
         let client = reqwest::Client::new();
         let user_id = self.auth.user_id().unwrap();
-        let url = util::get_command_url(&user_id, &robot_id);
+        let url = util::get_dispatch_command_url(&user_id, &robot_id);
         let bearer_token = self.auth.get_authorization().await.unwrap();
         let headers = util::get_api_headers(&bearer_token);
         let request = CommandRequest::new(robot_id, command);
-        let robot: CommandResponse = client
+        let response: CommandResponse = client
             .post(url)
             .headers(headers)
             .json(&request)
@@ -83,6 +83,25 @@ impl Client {
             .json()
             .await?;
 
-        Ok(robot)
+        Ok(response)
+    }
+
+    pub async fn reset_drawer(&self, robot_id: &str, new_cycle_capacity: u64) -> Result<Robot> {
+        let client = reqwest::Client::new();
+        let user_id = self.auth.user_id().unwrap();
+        let url = util::get_robot_by_id_url(&user_id, &robot_id);
+        let bearer_token = self.auth.get_authorization().await.unwrap();
+        let headers = util::get_api_headers(&bearer_token);
+        let request = ResetDrawerRequest::new(new_cycle_capacity);
+        let response: Robot = client
+            .patch(url)
+            .headers(headers)
+            .json(&request)
+            .send()
+            .await?
+            .json()
+            .await?;
+
+        Ok(response)
     }
 }

@@ -63,3 +63,21 @@ pub struct CommandOutput {
     pub timestamp: String,
     pub ttl: u64,
 }
+
+#[derive(Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ResetDrawerRequest {
+    pub cycles_after_drawer_full: u64,
+    pub cycle_count: u64,
+    pub cycle_capacity: u64,
+}
+
+impl ResetDrawerRequest {
+    pub fn new(new_cycle_capacity: u64) -> Self {
+        Self {
+            cycles_after_drawer_full: 0,
+            cycle_count: 0,
+            cycle_capacity: new_cycle_capacity,
+        }
+    }
+}
