@@ -188,7 +188,6 @@ impl OAuthRefreshBody {
 }
 
 #[derive(Deserialize)]
-#[serde(rename_all = "camelCase")]
 struct OAuthRefreshResponse {
     refresh_token: String,
     expires_in: String,

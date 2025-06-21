@@ -114,7 +114,7 @@ async fn main() -> Result<()> {
                 tokio::time::sleep(Duration::from_secs(seconds)).await;
             }
         }
-    });
+    }).await?;
 
     Ok(())
 }
